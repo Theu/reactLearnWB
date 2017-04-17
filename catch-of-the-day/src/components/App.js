@@ -5,6 +5,7 @@ import Inventory from './Inventory';
 import Fish from './Fish';
 
 import sampleFishes from '../sample-fishes'
+import base from '../base'
 
 class App extends React.Component {
     constructor() {
@@ -57,7 +58,7 @@ class App extends React.Component {
                         }
                     </ul>
                 </div>
-                <Order />
+                <Order fish={this.state.fishes} order={this.state.order}  />
                 <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
             </div>
         )
