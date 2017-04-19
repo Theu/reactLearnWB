@@ -23,16 +23,31 @@ class App extends React.Component {
     }
 
     componentWillMount() {
+        // this run before the App is rendered
         this.ref = base.syncState(`${this.props.params.storeId}/fishes`, {
             context: this,
             state: 'fishes'
         })
+        //  checko if there is any order in localStorage 
+        const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`)
+        if(localStorageRef) {
+            this.setState({
+                order: JSON.parse(localStorageRef)
+            })
+        }
     }
 
     componentWillUnmont() {
         base.removeBinding(this.ref);
     }
-
+    
+    componentWillUpdate(nextProps, nextState) {
+        //  use local storage
+        localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order))
+    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order))
+    // }
     addFish(fish) {
         //update our state
         const fishes = {...this.state.fishes}  // the spread operator thake a copy of all elemnt and insert in the object
@@ -70,7 +85,11 @@ class App extends React.Component {
                         }
                     </ul>
                 </div>
-                <Order fish={this.state.fishes} order={this.state.order}  />
+                <Order 
+                    fish={this.state.fishes} 
+                    order={this.state.order}
+                    params={this.props.params} 
+                />
                 <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
             </div>
         )
