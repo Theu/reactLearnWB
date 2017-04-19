@@ -21,6 +21,18 @@ class App extends React.Component {
             order: {}
         };
     }
+
+    componentWillMount() {
+        this.ref = base.syncState(`${this.props.params.storeId}/fishes`, {
+            context: this,
+            state: 'fishes'
+        })
+    }
+
+    componentWillUnmont() {
+        base.removeBinding(this.ref);
+    }
+
     addFish(fish) {
         //update our state
         const fishes = {...this.state.fishes}  // the spread operator thake a copy of all elemnt and insert in the object
